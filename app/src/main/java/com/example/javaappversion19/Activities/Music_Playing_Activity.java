@@ -1,6 +1,7 @@
 package com.example.javaappversion19.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.media.AudioAttributes;
 import android.media.Image;
@@ -13,20 +14,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.javaappversion19.R;
 
 public class Music_Playing_Activity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
-    private ImageView backButton;
+    private ImageView backButton , songImage;
 
-    TextView timeRemaining , totalTime;
+    TextView timeRemaining , totalTime , songName , singer;
     private SeekBar seekBar;
     final Handler handler = new Handler();
 
-    Button pause , startAgain , repeat;
-    int flag = 0 , repeatInt = 0;
+    Button pause , startAgain , repeat ,donotDisturb;
+    int flag = 0 , repeatInt = 0 , donotDisturbInt = 0 ;
+    String url = "" , imgurl = "" , songname="";
+
 
 
     @Override
@@ -41,34 +47,73 @@ public class Music_Playing_Activity extends AppCompatActivity {
         totalTime = findViewById(R.id.totalTime);
         startAgain = findViewById(R.id.startAgain);
         repeat = findViewById(R.id.repeat);
+        donotDisturb = findViewById(R.id.donotDisturb);
+        songImage = findViewById(R.id.songImage);
+        songName = findViewById(R.id.songName);
+        singer = findViewById(R.id.singer);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.status_bar_color));
+
+
+        songName.setText(getIntent().getStringExtra("songname"));
+        singer.setText(getIntent().getStringExtra("singername"));
+
+
+        // Load the image using Glide in a separate thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Load the image using Glide
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        imgurl = getIntent().getStringExtra("imgurl");
+
+                        Glide.with(Music_Playing_Activity.this)
+                                .load(imgurl)
+                                .into(songImage);
+                    }
+                });
+            }
+        }).start();
 
 
 
+// Create and prepare the MediaPlayer in a separate thread
         mediaPlayer = new MediaPlayer();
 
-        try {
-            // Set the audio attributes for the media player (optional, but recommended)
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build();
-            mediaPlayer.setAudioAttributes(audioAttributes);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-            // Set the data source to your song URL
-//            callDatabase();
-            String songUrl = "https://firebasestorage.googleapis.com/v0/b/music-bf3c4.appspot.com/o/Sun%20Saathiya.mp3?alt=media&token=639ee81b-10d2-4dd9-b73b-eceae75b8634";
-            mediaPlayer.setDataSource(songUrl);
 
-            // Prepare the media player
-            mediaPlayer.prepare();
+                try {
+                    // Set the audio attributes for the media player (optional, but recommended)
+                    url = getIntent().getStringExtra("url");
 
-            // Start playing the audio
-            mediaPlayer.start();
-        } catch (Exception e) {
-            Log.e("TAG", "Error playing audio: " + e.getMessage());
-            e.printStackTrace();
-        }
+                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .build();
+                    mediaPlayer.setAudioAttributes(audioAttributes);
+                    // Set the data source to your song URL
+                    mediaPlayer.setDataSource(url);
+                    // Prepare the media player
+                    mediaPlayer.prepare();
+                    // Start playing the audio
+                    mediaPlayer.start();
 
+
+                } catch (Exception e) {
+                    Log.e("TAG", "Error playing audio: " + e.getMessage());
+//                    Toast.makeText(Music_Playing_Activity.this, "Not able to fetch music", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+        //pause play button set
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,16 +133,20 @@ public class Music_Playing_Activity extends AppCompatActivity {
             }
         });
 
+        // back button
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
             }
         });
 
-        totalTime.setText(millisecondsToTime(mediaPlayer.getDuration()));
-        timeRemaining.setText("");
 
+
+        //seek bar
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -121,6 +170,7 @@ public class Music_Playing_Activity extends AppCompatActivity {
             }
         });
 
+
         startAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,8 +187,7 @@ public class Music_Playing_Activity extends AppCompatActivity {
                     int totalDuration = mediaPlayer.getDuration();
                     int progress = (int) (((float) currentPosition / totalDuration) * 100);
 
-//                    int remainingTimeMillis = mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition();
-//                    timeRemaining.setText(millisecondsToTime(remainingTimeMillis));
+
 //                    timeRemaining.setText(millisecondsToTime(currentPosition));
 
 
@@ -148,13 +197,14 @@ public class Music_Playing_Activity extends AppCompatActivity {
             }
         }, 1000);
 
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     int currentPosition = mediaPlayer.getCurrentPosition();
                     timeRemaining.setText(millisecondsToTime(currentPosition));
+                    totalTime.setText(millisecondsToTime(mediaPlayer.getDuration()));
+
 
                 }
                 handler.postDelayed(this, 1000); // Update every 1 second
@@ -162,6 +212,9 @@ public class Music_Playing_Activity extends AppCompatActivity {
         }, 1000);
 
 
+
+
+        //repeat set
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,14 +222,56 @@ public class Music_Playing_Activity extends AppCompatActivity {
                 if (repeatInt == 0)
                 {
                     repeat.setBackgroundResource(R.drawable.baseline_repeat_on_24);
+                    Toast.makeText(Music_Playing_Activity.this, "Repetition on ", Toast.LENGTH_SHORT).show();
                     repeatInt = 1;
                 }else {
                     repeat.setBackgroundResource(R.drawable.baseline_repeat_24);
+                    Toast.makeText(Music_Playing_Activity.this, "Repetition off ", Toast.LENGTH_SHORT).show();
                     repeatInt = 0;
                 }
             }
         });
 
+        //donot disturb set
+        donotDisturb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (donotDisturbInt == 0)
+                {
+                    donotDisturb.setBackgroundResource(R.drawable.baseline_do_not_disturb_on_total_silence_24);
+                    Toast.makeText(Music_Playing_Activity.this, "dnd on ", Toast.LENGTH_SHORT).show();
+
+                    donotDisturbInt = 1;
+                }else {
+                    donotDisturb.setBackgroundResource(R.drawable.baseline_do_not_disturb_off_24);
+                    Toast.makeText(Music_Playing_Activity.this, "dnd off ", Toast.LENGTH_SHORT).show();
+
+                    donotDisturbInt = 0;
+                }
+            }
+        });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+
+
+        songImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbar.collapseActionView();
+            }
+        });
+
+
+
+
+    }
+
+    protected void onPause() {
+
+        super.onPause();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
     }
 

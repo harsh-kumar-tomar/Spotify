@@ -8,43 +8,114 @@
     android:background="@drawable/background1"
     >
 
-    <LinearLayout
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_arrow_back_24"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+
+                    android:background="@drawable/background2"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/avenir_next_font"
+                    android:text="PLAYING FROM YOUR LIBRARY"
+                    android:textColor="#fff"
+                    android:textSize="12dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/backButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/avenir_next_font_bold"
+                    android:text="Linked Songs"
+                    android:textColor="#fff"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/backButton"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/option_menu"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
-            android:layout_marginBottom="120dp"
-            >
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/songImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
+                android:elevation="30dp"
 
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="200dp"
-                android:background="@drawable/konosuba"
 
 
                 />
@@ -53,71 +124,90 @@
         </androidx.cardview.widget.CardView>
 
 
-
-
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/songName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="30dp"
+
+
+            android:fontFamily="@font/avenir_next_font"
             android:text="Mann Mera"
-            android:fontFamily="@font/varela_font"
-
+            android:textColor="#fff"
             android:textSize="30dp"
-            tools:layout_editor_absoluteX="37dp"
-            tools:layout_editor_absoluteY="473dp" />
+            android:maxLines="1"
+
+
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/singer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
+
             android:text="Gajendra Verma"
-            tools:layout_editor_absoluteX="38dp"
-            tools:layout_editor_absoluteY="502dp" />
+            android:textColor="#B3B3B3"
+            android:maxLines="1"
+
+            app:layout_constraintStart_toStartOf="@+id/songName"
+            app:layout_constraintTop_toBottomOf="@+id/songName" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+
             android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
 
 
-
+            android:backgroundTint="#571A7C"
             android:max="100"
+
             android:progress="0"
+            android:progressTint="#FFFFFF"
+            android:thumbTint="#FFFFFF"
+
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="568dp" />
+            app:layout_constraintTop_toBottomOf="@+id/singer" />
+
+
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="598dp"
+            app:layout_constraintTop_toBottomOf="@id/seekBar"
             >
 
             <TextView
                 android:id="@+id/timeRemaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_gravity="start"
-                android:textSize="10dp"
+                android:layout_marginStart="20dp"
                 android:fontFamily="@font/varela_font"
                 android:text="0:11"
-                />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/totalTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
                 android:layout_marginEnd="20dp"
-                android:text="3:35"
+                android:layout_weight="1"
                 android:fontFamily="@font/varela_font"
+                android:gravity="end"
+                android:text="3:35"
                 android:textSize="10dp"
 
                 />
@@ -127,14 +217,16 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
+            android:layout_marginTop="0dp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
 
+            android:gravity="center"
             >
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/repeat"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -142,14 +234,14 @@
                 android:background="@drawable/baseline_repeat_24"
                 android:text="" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/startAgain"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/baseline_skip_previous_24"
                 android:text="" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/pause"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -158,27 +250,27 @@
                 android:background="@drawable/baseline_pause_circle_24"
                 android:text="" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/baseline_skip_next_24"
                 android:text="" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/donotDisturb"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="30dp"
 
-                android:background="@drawable/baseline_do_not_disturb_on_total_silence_24"
+                android:background="@drawable/baseline_do_not_disturb_off_24"
                 android:text="" />
 
 
         </LinearLayout>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

@@ -55,7 +55,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             super(itemView);
             imageView = itemView.findViewById(R.id.image);
             playlistName = itemView.findViewById(R.id.playlistName);
-            noofSongs = itemView.findViewById(R.id.noofSongs);
+            noofSongs = itemView.findViewById(R.id.singer);
 
         }
     }

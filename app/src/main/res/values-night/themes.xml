@@ -2,8 +2,37 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Javaappversion19" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimary">#571A7C</item>
+         <item name="colorPrimary">#3B1253</item> 
+        <item name="colorPrimaryDark">#3B1253</item>
+        <item name="android:statusBarColor">#807622</item>
+
 
     </style>
+
+    <style name="BottomNavigationTextStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:textSize">50dp</item>
+    </style>
+
+
+    <style name="searchTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">#000</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="android:statusBarColor">#807622</item>
+    </style>
+
+
+    <style name="fontTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">#000</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="android:statusBarColor">#807622</item>
+
+        <item name="fontFamily">@font/avenir_next_font_bold</item>
+    </style>
+
+
+
+
+
 </resources>
