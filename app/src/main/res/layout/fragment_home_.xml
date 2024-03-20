@@ -38,7 +38,7 @@
 
 
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/userr_image"
+                                android:id="@+id/user_image"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
 
@@ -63,7 +63,7 @@
                                 android:textSize="30dp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/userr_image"
+                                app:layout_constraintStart_toEndOf="@+id/user_image"
                                 app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -1,11 +1,15 @@
 package com.example.javaappversion19.Activities;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,7 +23,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class first_activity extends AppCompatActivity {
 
@@ -28,6 +39,7 @@ public class first_activity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     GoogleSignInClient mGoogleSignInClient;
 
+    FirebaseAuth mAuth;
 
 
 
@@ -46,10 +58,13 @@ public class first_activity extends AppCompatActivity {
 
 
         GoogleSignInOptions gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth = FirebaseAuth.getInstance();
+
 
         google_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +75,41 @@ public class first_activity extends AppCompatActivity {
             }
         });
 
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(first_activity.this , login_activity.class));
+            }
+        });
+        signup_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(first_activity.this , signup_Activity.class));
+            }
+        });
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this); //check if the user is already google signed in or not
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();//check if the user is registered with firebase or not
+        if (currentUser!=null)
+        {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
 
+    }
+    public void init()
+    {
+        google_btn = findViewById(R.id.google_btn);
+        login_btn = findViewById(R.id.login_btn);
+        signup_btn = findViewById(R.id.signup_btn);
 
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
@@ -84,36 +129,49 @@ public class first_activity extends AppCompatActivity {
 
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-            Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+            if (account != null) {
+                String idToken = account.getIdToken();
+                firebaseAuthWithGoogle(idToken);
+                Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle the case where GoogleSignInAccount is null
+                Toast.makeText(this, "Google Sign In Account is null", Toast.LENGTH_SHORT).show();
+            }
 
 
-        } catch (ApiException e) {
-            Toast.makeText(this, "Sign In failed "+e.getStatusCode() + e.getMessage(), Toast.LENGTH_SHORT).show();
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Toast.makeText(this, "Sign In failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//            throw new RuntimeException(e);
         }
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account!=null)
-        {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
 
+    private void firebaseAuthWithGoogle(String idtoken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idtoken , null);
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+
+                        } else {
+//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                }).addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        Toast.makeText(first_activity.this, "some error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public void init()
-    {
-        google_btn = findViewById(R.id.google_btn);
-        login_btn = findViewById(R.id.login_btn);
-        signup_btn = findViewById(R.id.signup_btn);
 
-        progressBar = findViewById(R.id.progressBar);
-    }
 }

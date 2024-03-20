@@ -2,4 +2,5 @@
     <string name="app_name">javaappversion19</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">411131336144-urjiflecbfm4tgi5kb9tl6p96m6q0pac.apps.googleusercontent.com</string>
 </resources>

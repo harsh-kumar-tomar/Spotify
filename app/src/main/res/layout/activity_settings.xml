@@ -26,7 +26,7 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userr_image"
+            android:id="@+id/user_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
 
@@ -105,7 +105,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/texfetView7"
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_font"
@@ -116,7 +116,7 @@
                 tools:layout_editor_absoluteY="62dp" />
 
             <TextView
-                android:id="@+id/t21extfeView7"
+                android:id="@+id/user_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="avengerisop"
@@ -126,7 +126,7 @@
                 tools:layout_editor_absoluteY="62dp" />
 
             <TextView
-                android:id="@+id/textfeView7"
+                android:id="@+id/user_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male"
@@ -136,7 +136,7 @@
                 tools:layout_editor_absoluteY="62dp" />
 
             <TextView
-                android:id="@+id/texteView7"
+                android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="harshpiyush2027@gmail.com"

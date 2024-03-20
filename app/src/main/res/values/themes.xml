@@ -11,7 +11,7 @@
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">#000</item>
         <item name="colorPrimaryDark">#000</item>
-        <item name="android:statusBarColor">#807622</item>
+        <item name="android:statusBarColor">#000</item>
 
         <item name="fontFamily">@font/avenir_next_font</item>
     </style>
