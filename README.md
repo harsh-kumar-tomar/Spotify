@@ -1,3 +1,7 @@
+
+![l](https://github.com/harsh-kumar-tomar/Spotify/assets/114944825/26e5d6c4-bba9-46cb-b131-8014279c64ba)
+
+
 <h1>Spotify Clone</h1>
 
 A clone of famous music application spotify .
